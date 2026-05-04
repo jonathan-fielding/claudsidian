@@ -1,5 +1,11 @@
 # neuralnotes
 
+## 1.0.0
+
+### Major Changes
+
+- d587653: Renamed plugin from Claudsidian to NeuralNotes. The plugin id in manifest.json has changed from `claudsidian` to `neuralnotes` — existing users will need to reinstall the plugin under the new folder name.
+
 ## 0.1.2
 
 ### Upgrade note

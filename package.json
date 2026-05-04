@@ -1,6 +1,6 @@
 {
   "name": "neuralnotes",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "description": "Obsidian plugin: chat with Claude Code over your notes.",
   "main": "main.js",
   "scripts": {
