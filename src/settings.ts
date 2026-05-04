@@ -45,8 +45,6 @@ export class ClaudsidianSettingTab extends PluginSettingTab {
     const { containerEl } = this;
     containerEl.empty();
 
-    containerEl.createEl("h2", { text: "Claudsidian" });
-
     const intro = containerEl.createEl("p");
     intro.setText(
       "This plugin uses the Claude Agent SDK, which spawns the local `claude` CLI. " +
@@ -54,7 +52,7 @@ export class ClaudsidianSettingTab extends PluginSettingTab {
     );
 
     new Setting(containerEl)
-      .setName("Path to claude binary")
+      .setName("Path to Claude binary")
       .setDesc(
         "Optional. Leave blank to use the `claude` binary on your PATH.",
       )
@@ -144,7 +142,7 @@ export class ClaudsidianSettingTab extends PluginSettingTab {
           },
         );
         ta.inputEl.rows = 4;
-        ta.inputEl.style.width = "100%";
+        ta.inputEl.addClass("claudsidian-settings-textarea");
       });
   }
 }
