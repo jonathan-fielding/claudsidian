@@ -1,13 +1,13 @@
 import { Plugin, WorkspaceLeaf } from "obsidian";
 import { ClaudeView, VIEW_TYPE_CLAUDE } from "./view";
 import {
-  ClaudsidianSettingTab,
+  NeuralNotesSettingTab,
   DEFAULT_SETTINGS,
-  ClaudsidianSettings,
+  NeuralNotesSettings,
 } from "./settings";
 
-export default class ClaudsidianPlugin extends Plugin {
-  settings: ClaudsidianSettings = DEFAULT_SETTINGS;
+export default class NeuralNotesPlugin extends Plugin {
+  settings: NeuralNotesSettings = DEFAULT_SETTINGS;
 
   async onload() {
     await this.loadSettings();
@@ -17,17 +17,17 @@ export default class ClaudsidianPlugin extends Plugin {
       (leaf: WorkspaceLeaf) => new ClaudeView(leaf, this),
     );
 
-    this.addRibbonIcon("bot", "Claudsidian", () => {
+    this.addRibbonIcon("bot", "NeuralNotes", () => {
       void this.activateView();
     });
 
     this.addCommand({
-      id: "open-claudsidian-pane",
-      name: "Open Claudsidian pane",
+      id: "open-neuralnotes-pane",
+      name: "Open NeuralNotes pane",
       callback: () => void this.activateView(),
     });
 
-    this.addSettingTab(new ClaudsidianSettingTab(this.app, this));
+    this.addSettingTab(new NeuralNotesSettingTab(this.app, this));
   }
 
   async activateView() {

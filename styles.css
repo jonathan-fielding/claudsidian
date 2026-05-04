@@ -1,4 +1,4 @@
-.claudsidian-view {
+.neuralnotes-view {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -6,7 +6,7 @@
   gap: 0;
 }
 
-.claudsidian-messages {
+.neuralnotes-messages {
   flex: 1 1 auto;
   overflow-y: auto;
   padding: 8px 12px;
@@ -15,7 +15,7 @@
   gap: 9px;
 }
 
-.claudsidian-msg {
+.neuralnotes-msg {
   border-radius: 6px;
   padding: 6px 10px;
   max-width: 100%;
@@ -23,7 +23,7 @@
   position: relative;
 }
 
-.claudsidian-copy-btn {
+.neuralnotes-copy-btn {
   position: absolute;
   top: 4px;
   right: 4px;
@@ -41,30 +41,30 @@
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
-.claudsidian-copy-btn:hover {
+.neuralnotes-copy-btn:hover {
   color: var(--text-normal);
   background: var(--background-secondary);
 }
 
-.claudsidian-msg-user:hover .claudsidian-copy-btn,
-.claudsidian-msg-assistant:hover .claudsidian-copy-btn,
-.claudsidian-msg-tool-error:hover .claudsidian-copy-btn,
-.claudsidian-msg-error:hover .claudsidian-copy-btn,
-.claudsidian-copy-btn:focus-visible {
+.neuralnotes-msg-user:hover .neuralnotes-copy-btn,
+.neuralnotes-msg-assistant:hover .neuralnotes-copy-btn,
+.neuralnotes-msg-tool-error:hover .neuralnotes-copy-btn,
+.neuralnotes-msg-error:hover .neuralnotes-copy-btn,
+.neuralnotes-copy-btn:focus-visible {
   opacity: 1;
 }
 
-.claudsidian-copy-btn-copied {
+.neuralnotes-copy-btn-copied {
   color: var(--text-success, var(--text-accent));
   opacity: 1 !important;
 }
 
-.claudsidian-copy-btn .svg-icon {
+.neuralnotes-copy-btn .svg-icon {
   width: 14px;
   height: 14px;
 }
 
-.claudsidian-msg-role {
+.neuralnotes-msg-role {
   font-size: 0.7em;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -73,116 +73,116 @@
   line-height: 1.2;
 }
 
-.claudsidian-msg-body {
+.neuralnotes-msg-body {
   white-space: normal;
   line-height: 1.4;
 }
 
-.claudsidian-msg-user .claudsidian-msg-body {
+.neuralnotes-msg-user .neuralnotes-msg-body {
   white-space: pre-wrap;
 }
 
 /* Tighten Obsidian's MarkdownRenderer output. The renderer wraps each
    element in <div class="el-h1|el-p|el-ul|el-hr|...">, and Obsidian's theme
    gives those wrappers generous margins. Override aggressively. */
-.claudsidian-msg-body > div[class^="el-"],
-.claudsidian-msg-body > div[class*=" el-"] {
+.neuralnotes-msg-body > div[class^="el-"],
+.neuralnotes-msg-body > div[class*=" el-"] {
   margin: 0 !important;
   padding: 0 !important;
 }
 
-.claudsidian-msg-body > div[class^="el-"] + div[class^="el-"],
-.claudsidian-msg-body > div[class*=" el-"] + div[class*=" el-"] {
+.neuralnotes-msg-body > div[class^="el-"] + div[class^="el-"],
+.neuralnotes-msg-body > div[class*=" el-"] + div[class*=" el-"] {
   margin-top: 0.9em !important;
 }
 
-.claudsidian-msg-body > .el-h1 + div[class^="el-"],
-.claudsidian-msg-body > .el-h2 + div[class^="el-"],
-.claudsidian-msg-body > .el-h3 + div[class^="el-"],
-.claudsidian-msg-body > .el-h4 + div[class^="el-"],
-.claudsidian-msg-body > .el-h5 + div[class^="el-"],
-.claudsidian-msg-body > .el-h6 + div[class^="el-"] {
+.neuralnotes-msg-body > .el-h1 + div[class^="el-"],
+.neuralnotes-msg-body > .el-h2 + div[class^="el-"],
+.neuralnotes-msg-body > .el-h3 + div[class^="el-"],
+.neuralnotes-msg-body > .el-h4 + div[class^="el-"],
+.neuralnotes-msg-body > .el-h5 + div[class^="el-"],
+.neuralnotes-msg-body > .el-h6 + div[class^="el-"] {
   margin-top: 0.5em !important;
 }
 
-.claudsidian-msg-body > div[class^="el-"]:has(+ .el-h1),
-.claudsidian-msg-body > div[class^="el-"]:has(+ .el-h2),
-.claudsidian-msg-body > div[class^="el-"]:has(+ .el-h3),
-.claudsidian-msg-body > div[class^="el-"]:has(+ .el-h4),
-.claudsidian-msg-body > div[class^="el-"]:has(+ .el-h5),
-.claudsidian-msg-body > div[class^="el-"]:has(+ .el-h6) {
+.neuralnotes-msg-body > div[class^="el-"]:has(+ .el-h1),
+.neuralnotes-msg-body > div[class^="el-"]:has(+ .el-h2),
+.neuralnotes-msg-body > div[class^="el-"]:has(+ .el-h3),
+.neuralnotes-msg-body > div[class^="el-"]:has(+ .el-h4),
+.neuralnotes-msg-body > div[class^="el-"]:has(+ .el-h5),
+.neuralnotes-msg-body > div[class^="el-"]:has(+ .el-h6) {
   margin-bottom: 0.85em !important;
 }
 
-.claudsidian-msg-body p {
+.neuralnotes-msg-body p {
   margin: 0 !important;
 }
 
-.claudsidian-msg-body h1,
-.claudsidian-msg-body h2,
-.claudsidian-msg-body h3,
-.claudsidian-msg-body h4,
-.claudsidian-msg-body h5,
-.claudsidian-msg-body h6 {
+.neuralnotes-msg-body h1,
+.neuralnotes-msg-body h2,
+.neuralnotes-msg-body h3,
+.neuralnotes-msg-body h4,
+.neuralnotes-msg-body h5,
+.neuralnotes-msg-body h6 {
   margin: 0 !important;
   padding: 0 !important;
   line-height: 1.25 !important;
 }
 
-.claudsidian-msg-body ul,
-.claudsidian-msg-body ol {
+.neuralnotes-msg-body ul,
+.neuralnotes-msg-body ol {
   margin: 0 !important;
   padding-left: 1.4em !important;
 }
 
-.claudsidian-msg-body li {
+.neuralnotes-msg-body li {
   margin: 0.25em 0 !important;
 }
 
-.claudsidian-msg-body li > p {
+.neuralnotes-msg-body li > p {
   margin: 0 !important;
 }
 
-.claudsidian-msg-body pre {
+.neuralnotes-msg-body pre {
   margin: 0 !important;
   padding: 6px 8px !important;
 }
 
-.claudsidian-msg-body blockquote {
+.neuralnotes-msg-body blockquote {
   margin: 0 !important;
   padding-left: 0.7em !important;
 }
 
-.claudsidian-msg-body hr {
+.neuralnotes-msg-body hr {
   margin: 0.7em 0 !important;
 }
 
-.claudsidian-msg-user {
+.neuralnotes-msg-user {
   background: var(--background-secondary);
   align-self: flex-end;
   max-width: 80%;
 }
 
-.claudsidian-msg-assistant {
+.neuralnotes-msg-assistant {
   background: var(--background-primary-alt);
   border: 1px solid var(--background-modifier-border);
 }
 
-.claudsidian-msg-system {
+.neuralnotes-msg-system {
   font-size: 0.85em;
   color: var(--text-muted);
   text-align: center;
   font-style: italic;
 }
 
-.claudsidian-thinking {
+.neuralnotes-thinking {
   margin: 6px 0 10px;
   border: 1px solid var(--background-modifier-border);
   border-radius: 5px;
   background: var(--background-secondary);
 }
 
-.claudsidian-thinking > summary {
+.neuralnotes-thinking > summary {
   cursor: pointer;
   padding: 3px 8px;
   font-size: 0.8em;
@@ -191,11 +191,11 @@
   user-select: none;
 }
 
-.claudsidian-thinking > summary::-webkit-details-marker {
+.neuralnotes-thinking > summary::-webkit-details-marker {
   display: none;
 }
 
-.claudsidian-thinking > summary::before {
+.neuralnotes-thinking > summary::before {
   content: "▶";
   display: inline-block;
   margin-right: 6px;
@@ -203,26 +203,26 @@
   transition: transform 0.15s;
 }
 
-.claudsidian-thinking[open] > summary::before {
+.neuralnotes-thinking[open] > summary::before {
   transform: rotate(90deg);
 }
 
-.claudsidian-thinking-label {
+.neuralnotes-thinking-label {
   font-weight: 500;
 }
 
-.claudsidian-thinking-count {
+.neuralnotes-thinking-count {
   color: var(--text-faint);
 }
 
-.claudsidian-thinking-list {
+.neuralnotes-thinking-list {
   padding: 2px 10px 6px 18px;
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
-.claudsidian-thinking-row {
+.neuralnotes-thinking-row {
   font-family: var(--font-monospace);
   font-size: 0.78em;
   color: var(--text-muted);
@@ -233,7 +233,7 @@
   line-height: 1.4;
 }
 
-.claudsidian-thinking-head-details > summary {
+.neuralnotes-thinking-head-details > summary {
   cursor: pointer;
   list-style: none;
   display: flex;
@@ -241,21 +241,21 @@
   align-items: baseline;
 }
 
-.claudsidian-thinking-head-details > summary::-webkit-details-marker {
+.neuralnotes-thinking-head-details > summary::-webkit-details-marker {
   display: none;
 }
 
-.claudsidian-thinking-head-details > summary::before {
+.neuralnotes-thinking-head-details > summary::before {
   content: "▸";
   color: var(--text-faint);
   margin-right: 2px;
 }
 
-.claudsidian-thinking-head-details[open] > summary::before {
+.neuralnotes-thinking-head-details[open] > summary::before {
   content: "▾";
 }
 
-.claudsidian-thinking-input {
+.neuralnotes-thinking-input {
   margin: 2px 0 2px 14px;
   padding: 4px 6px;
   background: var(--background-primary);
@@ -265,53 +265,53 @@
   line-height: 1.35;
 }
 
-.claudsidian-thinking-name {
+.neuralnotes-thinking-name {
   color: var(--text-normal);
   font-weight: 500;
 }
 
-.claudsidian-thinking-sep {
+.neuralnotes-thinking-sep {
   color: var(--text-faint);
 }
 
-.claudsidian-thinking-row-ok .claudsidian-thinking-icon {
+.neuralnotes-thinking-row-ok .neuralnotes-thinking-icon {
   color: var(--text-success, var(--text-accent));
 }
 
-.claudsidian-thinking-row-error .claudsidian-thinking-icon {
+.neuralnotes-thinking-row-error .neuralnotes-thinking-icon {
   color: var(--text-error, var(--background-modifier-error));
 }
 
-.claudsidian-thinking-row-permission .claudsidian-thinking-name {
+.neuralnotes-thinking-row-permission .neuralnotes-thinking-name {
   color: var(--text-muted);
   font-style: italic;
 }
 
-.claudsidian-thinking-row-deny .claudsidian-thinking-icon {
+.neuralnotes-thinking-row-deny .neuralnotes-thinking-icon {
   color: var(--text-error, var(--background-modifier-error));
 }
 
-.claudsidian-thinking-scope {
+.neuralnotes-thinking-scope {
   color: var(--text-faint);
   font-style: italic;
   margin-left: 4px;
 }
 
-.claudsidian-thinking-result {
+.neuralnotes-thinking-result {
   margin-left: 14px;
   position: relative;
 }
 
-.claudsidian-thinking-result:hover .claudsidian-copy-btn {
+.neuralnotes-thinking-result:hover .neuralnotes-copy-btn {
   opacity: 1;
 }
 
-.claudsidian-thinking-result .claudsidian-copy-btn {
+.neuralnotes-thinking-result .neuralnotes-copy-btn {
   top: 2px;
   right: 2px;
 }
 
-.claudsidian-thinking-result-summary {
+.neuralnotes-thinking-result-summary {
   cursor: pointer;
   list-style: none;
   padding: 2px 6px;
@@ -326,26 +326,26 @@
   text-overflow: ellipsis;
 }
 
-.claudsidian-thinking-result-summary::-webkit-details-marker {
+.neuralnotes-thinking-result-summary::-webkit-details-marker {
   display: none;
 }
 
-.claudsidian-thinking-result-summary::before {
+.neuralnotes-thinking-result-summary::before {
   content: "▸";
   color: var(--text-faint);
   margin-right: 4px;
   font-size: 0.85em;
 }
 
-.claudsidian-thinking-result[open] .claudsidian-thinking-result-summary::before {
+.neuralnotes-thinking-result[open] .neuralnotes-thinking-result-summary::before {
   content: "▾";
 }
 
-.claudsidian-thinking-result[open] .claudsidian-thinking-result-summary {
+.neuralnotes-thinking-result[open] .neuralnotes-thinking-result-summary {
   white-space: normal;
 }
 
-.claudsidian-thinking-result-body {
+.neuralnotes-thinking-result-body {
   margin: 3px 0 0 14px;
   padding: 4px 6px;
   background: var(--background-modifier-error);
@@ -358,47 +358,47 @@
   overflow-y: auto;
 }
 
-.claudsidian-placeholder {
+.neuralnotes-placeholder {
   color: var(--text-muted);
   font-style: italic;
-  animation: claudsidian-pulse 1.4s ease-in-out infinite;
+  animation: neuralnotes-pulse 1.4s ease-in-out infinite;
 }
 
-.claudsidian-view.is-awaiting-permission .claudsidian-placeholder {
+.neuralnotes-view.is-awaiting-permission .neuralnotes-placeholder {
   animation: none;
   opacity: 0.6;
 }
 
-@keyframes claudsidian-pulse {
+@keyframes neuralnotes-pulse {
   0%, 100% { opacity: 0.5; }
   50% { opacity: 1; }
 }
 
-.claudsidian-msg-tool-error,
-.claudsidian-msg-error {
+.neuralnotes-msg-tool-error,
+.neuralnotes-msg-error {
   background: var(--background-modifier-error);
   color: var(--text-on-accent);
   font-size: 0.9em;
 }
 
-.claudsidian-msg-permission {
+.neuralnotes-msg-permission {
   background: var(--background-modifier-cover, var(--background-secondary-alt));
   border: 1px solid var(--interactive-accent);
 }
 
-.claudsidian-msg-session-prompt {
+.neuralnotes-msg-session-prompt {
   background: var(--background-secondary-alt);
   border: 1px dashed var(--interactive-accent);
 }
 
-.claudsidian-suggestions {
+.neuralnotes-suggestions {
   margin-top: 10px;
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
 }
 
-.claudsidian-suggestion-btn {
+.neuralnotes-suggestion-btn {
   font-size: 0.85em;
   padding: 4px 10px;
   border-radius: 14px;
@@ -410,17 +410,17 @@
   text-align: left;
 }
 
-.claudsidian-suggestion-btn:hover:not(:disabled) {
+.neuralnotes-suggestion-btn:hover:not(:disabled) {
   background: var(--interactive-accent);
   color: var(--text-on-accent);
 }
 
-.claudsidian-suggestion-btn:disabled {
+.neuralnotes-suggestion-btn:disabled {
   opacity: 0.5;
   cursor: default;
 }
 
-.claudsidian-perm-summary {
+.neuralnotes-perm-summary {
   display: flex;
   gap: 8px;
   align-items: baseline;
@@ -428,55 +428,55 @@
   margin-bottom: 6px;
 }
 
-.claudsidian-perm-tool {
+.neuralnotes-perm-tool {
   font-weight: 600;
   font-family: var(--font-monospace);
 }
 
-.claudsidian-perm-target {
+.neuralnotes-perm-target {
   font-family: var(--font-monospace);
   color: var(--text-muted);
   word-break: break-all;
 }
 
-.claudsidian-perm-details summary {
+.neuralnotes-perm-details summary {
   cursor: pointer;
   font-size: 0.85em;
   color: var(--text-muted);
 }
 
-.claudsidian-perm-details pre {
+.neuralnotes-perm-details pre {
   margin-top: 6px;
   white-space: pre-wrap;
   font-size: 0.85em;
 }
 
-.claudsidian-perm-buttons {
+.neuralnotes-perm-buttons {
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
   margin-top: 8px;
 }
 
-.claudsidian-perm-buttons button {
+.neuralnotes-perm-buttons button {
   font-size: 0.85em;
 }
 
-.claudsidian-perm-resolved {
+.neuralnotes-perm-resolved {
   margin-top: 8px;
   font-size: 0.85em;
   color: var(--text-muted);
   font-style: italic;
 }
 
-.claudsidian-status {
+.neuralnotes-status {
   padding: 4px 16px;
   font-size: 0.8em;
   color: var(--text-muted);
   min-height: 1.4em;
 }
 
-.claudsidian-input-row {
+.neuralnotes-input-row {
   border-top: 1px solid var(--background-modifier-border);
   padding: 10px 12px;
   display: flex;
@@ -485,18 +485,18 @@
   background: var(--background-primary);
 }
 
-.claudsidian-input {
+.neuralnotes-input {
   width: 100%;
   resize: vertical;
   min-height: 60px;
   font-family: inherit;
 }
 
-.claudsidian-settings-textarea {
+.neuralnotes-settings-textarea {
   width: 100%;
 }
 
-.claudsidian-buttons {
+.neuralnotes-buttons {
   display: flex;
   gap: 8px;
   justify-content: flex-end;

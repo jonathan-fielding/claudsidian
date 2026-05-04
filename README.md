@@ -1,4 +1,4 @@
-# Claudsidian
+# NeuralNotes
 
 Chat with Claude Code from inside Obsidian. A custom main-area pane lets Claude read, search, and edit notes in your vault using its full agent toolkit (Read, Edit, Write, Glob, Grep, LS, Bash). Permission prompts, a "Claude's thoughts" log, quick-reply buttons, and a guided CLAUDE.md setup are built in.
 
@@ -16,13 +16,13 @@ The plugin auto-detects `claude` in common install paths (`/usr/local/bin`, `/op
 ### Manual install
 
 1. Download `main.js`, `manifest.json`, and `styles.css` from the [latest release](../../releases/latest).
-2. Create a folder `claudsidian` inside your vault's `.obsidian/plugins/` directory.
+2. Create a folder `neuralnotes` inside your vault's `.obsidian/plugins/` directory.
 3. Drop the three files into that folder.
-4. In Obsidian → Settings → Community plugins, enable **Claudsidian**.
+4. In Obsidian → Settings → Community plugins, enable **NeuralNotes**.
 
 ### Install via BRAT
 
-If you use the [BRAT](https://github.com/TfTHacker/obsidian42-brat) plugin to track beta plugins, add this repo's URL and BRAT will keep Claudsidian up to date.
+If you use the [BRAT](https://github.com/TfTHacker/obsidian42-brat) plugin to track beta plugins, add this repo's URL and BRAT will keep NeuralNotes up to date.
 
 ### Build from source
 
@@ -33,11 +33,11 @@ npm install
 npm run build
 ```
 
-`main.js` is produced in the repo root. Symlink or copy the repo folder into `<vault>/.obsidian/plugins/claudsidian/` (the folder must be named `claudsidian` to match `manifest.json`'s id).
+`main.js` is produced in the repo root. Symlink or copy the repo folder into `<vault>/.obsidian/plugins/neuralnotes/` (the folder must be named `neuralnotes` to match `manifest.json`'s id).
 
 ## Usage
 
-- Click the **bot** icon in the ribbon (or run "Open Claudsidian pane" from the command palette) to open the chat pane in the main area.
+- Click the **bot** icon in the ribbon (or run "Open NeuralNotes pane" from the command palette) to open the chat pane in the main area.
 - Type a question and press **Send** (or ⌘/Ctrl+Enter — see settings).
 - Claude works from your vault root, so paths like `Daily/2026-05-04.md` resolve relative to it.
 - Tools that touch files outside the vault (e.g. `/root/CLAUDE.md`) are auto-denied with a hint to retry using a vault-relative path.
@@ -48,8 +48,8 @@ npm run build
 
 When the pane opens (or you start a new chat):
 
-- **No CLAUDE.md in vault root** → Claudsidian offers to walk you through creating one. Claude will scan your folder structure, ask one question at a time (with quick-reply buttons), draft a CLAUDE.md, and write it on your approval.
-- **CLAUDE.md exists with a session-start protocol** (e.g. it says "Start each session by…") → Claudsidian offers to run that protocol now. Click **Run protocol** and Claude streams its progress as a checklist.
+- **No CLAUDE.md in vault root** → NeuralNotes offers to walk you through creating one. Claude will scan your folder structure, ask one question at a time (with quick-reply buttons), draft a CLAUDE.md, and write it on your approval.
+- **CLAUDE.md exists with a session-start protocol** (e.g. it says "Start each session by…") → NeuralNotes offers to run that protocol now. Click **Run protocol** and Claude streams its progress as a checklist.
 
 ## Settings
 
