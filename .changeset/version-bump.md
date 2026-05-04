@@ -1,5 +1,0 @@
----
-"claudsidian": patch
----
-
-Bump version
