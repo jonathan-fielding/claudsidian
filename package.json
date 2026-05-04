@@ -7,11 +7,19 @@
     "dev": "node --no-warnings=ExperimentalWarning esbuild.config.mjs",
     "build": "tsc -noEmit -skipLibCheck && node --no-warnings=ExperimentalWarning esbuild.config.mjs production",
     "typecheck": "tsc -noEmit -skipLibCheck",
-    "version": "node version-bump.mjs && git add manifest.json versions.json"
+    "version": "node version-bump.mjs && git add manifest.json versions.json",
+    "changeset": "changeset",
+    "version:packages": "changeset version && node version-bump.mjs",
+    "release": "node scripts/release.mjs"
   },
-  "keywords": ["obsidian", "claude", "claude-code"],
+  "keywords": [
+    "obsidian",
+    "claude",
+    "claude-code"
+  ],
   "license": "MIT",
   "devDependencies": {
+    "@changesets/cli": "^2.31.0",
     "@types/node": "^20.11.0",
     "builtin-modules": "^4.0.0",
     "esbuild": "^0.21.0",
