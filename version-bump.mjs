@@ -1,10 +1,11 @@
 import { readFileSync, writeFileSync } from "fs";
 
-// Works both when invoked via `npm version` (sets npm_package_version) and
-// standalone after `changeset version` (reads package.json directly).
-const targetVersion =
-  process.env.npm_package_version ||
-  JSON.parse(readFileSync("package.json", "utf8")).version;
+// Always read from package.json directly so this works correctly both when
+// invoked via `npm version` (which updates package.json before running lifecycle
+// scripts) and when run after `changeset version` (which also updates
+// package.json). Using process.env.npm_package_version would give the stale
+// pre-changeset version when called from the `version:packages` npm script.
+const targetVersion = JSON.parse(readFileSync("package.json", "utf8")).version;
 
 if (!targetVersion) {
   console.error("Could not determine version. Run via `npm version` or after `changeset version`.");
