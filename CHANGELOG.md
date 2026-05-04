@@ -1,5 +1,11 @@
 # neuralnotes
 
+## 1.0.1
+
+### Patch Changes
+
+- 7ed8c14: Update plugin description in manifest.json to "Interact with Claude Code, with a chat that that can read and edit your vault notes."
+
 ## 1.0.0
 
 ### Major Changes
