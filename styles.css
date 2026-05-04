@@ -492,6 +492,10 @@
   font-family: inherit;
 }
 
+.claudsidian-settings-textarea {
+  width: 100%;
+}
+
 .claudsidian-buttons {
   display: flex;
   gap: 8px;

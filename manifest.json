@@ -2,7 +2,7 @@
   "id": "claudsidian",
   "name": "Claudsidian",
   "version": "0.1.0",
-  "minAppVersion": "1.5.0",
+  "minAppVersion": "1.5.7",
   "description": "Chat with Claude Code in a main-area pane that can read and edit your vault notes.",
   "author": "Jonathan Fielding",
   "isDesktopOnly": true
