@@ -1,6 +1,6 @@
 {
   "name": "claudsidian",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Obsidian plugin: chat with Claude Code over your notes.",
   "main": "main.js",
   "scripts": {
