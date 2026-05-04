@@ -1,9 +1,12 @@
-name: Release
+name: Release (manual)
 
+# Manual fallback release. Primary release path is via the Changesets workflow.
 on:
-  push:
-    tags:
-      - "*.*.*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Version tag to release (e.g. 0.2.0)"
+        required: true
 
 permissions:
   contents: write
@@ -33,21 +36,20 @@ jobs:
           test -f manifest.json
           test -f styles.css
 
-      - name: Verify manifest version matches tag
+      - name: Verify manifest version matches input tag
         run: |
-          tag="${GITHUB_REF#refs/tags/}"
+          tag="${{ github.event.inputs.tag }}"
           manifest_version=$(node -p "require('./manifest.json').version")
           if [ "$tag" != "$manifest_version" ]; then
-            echo "Tag $tag does not match manifest.json version $manifest_version"
+            echo "Input tag $tag does not match manifest.json version $manifest_version"
             exit 1
           fi
 
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG: ${{ github.ref_name }}
         run: |
-          gh release create "$TAG" \
-            --title "$TAG" \
+          gh release create "${{ github.event.inputs.tag }}" \
+            --title "${{ github.event.inputs.tag }}" \
             --generate-notes \
             main.js manifest.json styles.css

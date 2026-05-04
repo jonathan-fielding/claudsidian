@@ -1,8 +1,13 @@
 import { readFileSync, writeFileSync } from "fs";
 
-const targetVersion = process.env.npm_package_version;
+// Works both when invoked via `npm version` (sets npm_package_version) and
+// standalone after `changeset version` (reads package.json directly).
+const targetVersion =
+  process.env.npm_package_version ||
+  JSON.parse(readFileSync("package.json", "utf8")).version;
+
 if (!targetVersion) {
-  console.error("npm_package_version is not set; run via `npm version`.");
+  console.error("Could not determine version. Run via `npm version` or after `changeset version`.");
   process.exit(1);
 }
 
