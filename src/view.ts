@@ -18,7 +18,7 @@ import {
   PermissionResponse,
 } from "./claude";
 
-export const VIEW_TYPE_CLAUDE = "neuralnotes-view";
+export const VIEW_TYPE_NEURALNOTES = "neuralnotes-view";
 
 export class ClaudeView extends ItemView {
   private plugin: NeuralNotesPlugin;
@@ -40,7 +40,7 @@ export class ClaudeView extends ItemView {
   }
 
   getViewType(): string {
-    return VIEW_TYPE_CLAUDE;
+    return VIEW_TYPE_NEURALNOTES;
   }
 
   getDisplayText(): string {

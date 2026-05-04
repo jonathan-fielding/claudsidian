@@ -1,5 +1,5 @@
 import { Plugin, WorkspaceLeaf } from "obsidian";
-import { ClaudeView, VIEW_TYPE_CLAUDE } from "./view";
+import { ClaudeView, VIEW_TYPE_NEURALNOTES } from "./view";
 import {
   NeuralNotesSettingTab,
   DEFAULT_SETTINGS,
@@ -13,7 +13,7 @@ export default class NeuralNotesPlugin extends Plugin {
     await this.loadSettings();
 
     this.registerView(
-      VIEW_TYPE_CLAUDE,
+      VIEW_TYPE_NEURALNOTES,
       (leaf: WorkspaceLeaf) => new ClaudeView(leaf, this),
     );
 
@@ -33,14 +33,14 @@ export default class NeuralNotesPlugin extends Plugin {
   async activateView() {
     const { workspace } = this.app;
 
-    const existing = workspace.getLeavesOfType(VIEW_TYPE_CLAUDE);
+    const existing = workspace.getLeavesOfType(VIEW_TYPE_NEURALNOTES);
     if (existing.length > 0) {
       workspace.revealLeaf(existing[0]);
       return;
     }
 
     const leaf = workspace.getLeaf("tab");
-    await leaf.setViewState({ type: VIEW_TYPE_CLAUDE, active: true });
+    await leaf.setViewState({ type: VIEW_TYPE_NEURALNOTES, active: true });
     workspace.revealLeaf(leaf);
   }
 
