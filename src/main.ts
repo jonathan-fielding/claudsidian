@@ -1,46 +1,46 @@
 import { Plugin, WorkspaceLeaf } from "obsidian";
-import { ClaudeView, VIEW_TYPE_CLAUDE } from "./view";
+import { ClaudeView, VIEW_TYPE_NEURALNOTES } from "./view";
 import {
-  ClaudsidianSettingTab,
+  NeuralNotesSettingTab,
   DEFAULT_SETTINGS,
-  ClaudsidianSettings,
+  NeuralNotesSettings,
 } from "./settings";
 
-export default class ClaudsidianPlugin extends Plugin {
-  settings: ClaudsidianSettings = DEFAULT_SETTINGS;
+export default class NeuralNotesPlugin extends Plugin {
+  settings: NeuralNotesSettings = DEFAULT_SETTINGS;
 
   async onload() {
     await this.loadSettings();
 
     this.registerView(
-      VIEW_TYPE_CLAUDE,
+      VIEW_TYPE_NEURALNOTES,
       (leaf: WorkspaceLeaf) => new ClaudeView(leaf, this),
     );
 
-    this.addRibbonIcon("bot", "Claudsidian", () => {
+    this.addRibbonIcon("bot", "NeuralNotes", () => {
       void this.activateView();
     });
 
     this.addCommand({
-      id: "open-claudsidian-pane",
-      name: "Open Claudsidian pane",
+      id: "open-neuralnotes-pane",
+      name: "Open NeuralNotes pane",
       callback: () => void this.activateView(),
     });
 
-    this.addSettingTab(new ClaudsidianSettingTab(this.app, this));
+    this.addSettingTab(new NeuralNotesSettingTab(this.app, this));
   }
 
   async activateView() {
     const { workspace } = this.app;
 
-    const existing = workspace.getLeavesOfType(VIEW_TYPE_CLAUDE);
+    const existing = workspace.getLeavesOfType(VIEW_TYPE_NEURALNOTES);
     if (existing.length > 0) {
       workspace.revealLeaf(existing[0]);
       return;
     }
 
     const leaf = workspace.getLeaf("tab");
-    await leaf.setViewState({ type: VIEW_TYPE_CLAUDE, active: true });
+    await leaf.setViewState({ type: VIEW_TYPE_NEURALNOTES, active: true });
     workspace.revealLeaf(leaf);
   }
 

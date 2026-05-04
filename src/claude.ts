@@ -1,5 +1,5 @@
 import { FileSystemAdapter } from "obsidian";
-import type ClaudsidianPlugin from "./main";
+import type NeuralNotesPlugin from "./main";
 import { execFile } from "child_process";
 import { promisify } from "util";
 import * as fs from "fs";
@@ -36,13 +36,13 @@ export interface RunOptions {
   canUseTool?: (req: PermissionRequest) => Promise<PermissionResponse>;
 }
 
-function getVaultPath(plugin: ClaudsidianPlugin): string {
+function getVaultPath(plugin: NeuralNotesPlugin): string {
   const adapter = plugin.app.vault.adapter;
   if (adapter instanceof FileSystemAdapter) {
     return adapter.getBasePath();
   }
   throw new Error(
-    "Claudsidian requires a desktop vault (FileSystemAdapter).",
+    "NeuralNotes requires a desktop vault (FileSystemAdapter).",
   );
 }
 
@@ -80,12 +80,12 @@ async function detectClaudeBinary(): Promise<string> {
 
   throw new Error(
     "Could not locate the `claude` CLI. Install Claude Code and run `claude login`, " +
-      "then set the binary path in Claudsidian settings.",
+      "then set the binary path in NeuralNotes settings.",
   );
 }
 
 export async function runClaudeQuery(
-  plugin: ClaudsidianPlugin,
+  plugin: NeuralNotesPlugin,
   options: RunOptions,
 ): Promise<string | undefined> {
   const cwd = getVaultPath(plugin);

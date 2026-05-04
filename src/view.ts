@@ -10,7 +10,7 @@ import {
 } from "obsidian";
 import * as path from "path";
 import * as fs from "fs";
-import type ClaudsidianPlugin from "./main";
+import type NeuralNotesPlugin from "./main";
 import {
   runClaudeQuery,
   ClaudeEvent,
@@ -18,10 +18,10 @@ import {
   PermissionResponse,
 } from "./claude";
 
-export const VIEW_TYPE_CLAUDE = "claudsidian-view";
+export const VIEW_TYPE_NEURALNOTES = "neuralnotes-view";
 
 export class ClaudeView extends ItemView {
-  private plugin: ClaudsidianPlugin;
+  private plugin: NeuralNotesPlugin;
   private messagesEl!: HTMLDivElement;
   private inputEl!: HTMLTextAreaElement;
   private sendBtn!: HTMLButtonElement;
@@ -34,17 +34,17 @@ export class ClaudeView extends ItemView {
   private pendingPermissions = 0;
   private currentBubble: AssistantBubbleHandle | null = null;
 
-  constructor(leaf: WorkspaceLeaf, plugin: ClaudsidianPlugin) {
+  constructor(leaf: WorkspaceLeaf, plugin: NeuralNotesPlugin) {
     super(leaf);
     this.plugin = plugin;
   }
 
   getViewType(): string {
-    return VIEW_TYPE_CLAUDE;
+    return VIEW_TYPE_NEURALNOTES;
   }
 
   getDisplayText(): string {
-    return "Claudsidian";
+    return "NeuralNotes";
   }
 
   getIcon(): string {
@@ -54,16 +54,16 @@ export class ClaudeView extends ItemView {
   async onOpen() {
     const root = this.containerEl.children[1] as HTMLElement;
     root.empty();
-    root.addClass("claudsidian-view");
+    root.addClass("neuralnotes-view");
 
-    this.messagesEl = root.createDiv({ cls: "claudsidian-messages" });
+    this.messagesEl = root.createDiv({ cls: "neuralnotes-messages" });
 
-    this.statusEl = root.createDiv({ cls: "claudsidian-status" });
+    this.statusEl = root.createDiv({ cls: "neuralnotes-status" });
     this.statusEl.setText("");
 
-    const inputRow = root.createDiv({ cls: "claudsidian-input-row" });
+    const inputRow = root.createDiv({ cls: "neuralnotes-input-row" });
     this.inputEl = inputRow.createEl("textarea", {
-      cls: "claudsidian-input",
+      cls: "neuralnotes-input",
       attr: { placeholder: "Ask Claude about your notes…", rows: "3" },
     });
     this.inputEl.addEventListener("keydown", (e) => {
@@ -89,28 +89,28 @@ export class ClaudeView extends ItemView {
       }
     });
 
-    const buttons = inputRow.createDiv({ cls: "claudsidian-buttons" });
+    const buttons = inputRow.createDiv({ cls: "neuralnotes-buttons" });
     this.sendBtn = buttons.createEl("button", {
       text: "Send",
-      cls: "mod-cta claudsidian-send",
+      cls: "mod-cta neuralnotes-send",
     });
     this.sendBtn.addEventListener("click", () => void this.handleSend());
 
     this.stopBtn = buttons.createEl("button", {
       text: "Stop",
-      cls: "claudsidian-stop",
+      cls: "neuralnotes-stop",
     });
     this.stopBtn.disabled = true;
     this.stopBtn.addEventListener("click", () => this.handleStop());
 
     const newBtn = buttons.createEl("button", {
       text: "New chat",
-      cls: "claudsidian-new",
+      cls: "neuralnotes-new",
     });
     newBtn.addEventListener("click", () => this.resetConversation());
 
     this.appendSystemMessage(
-      "Claudsidian ready. Type a question and press Send (⌘/Ctrl+Enter).",
+      "NeuralNotes ready. Type a question and press Send (⌘/Ctrl+Enter).",
     );
 
     void this.maybeOfferSessionProtocol();
@@ -149,20 +149,20 @@ export class ClaudeView extends ItemView {
 
   private appendCreateClaudeMdBubble() {
     const el = this.messagesEl.createDiv({
-      cls: "claudsidian-msg claudsidian-msg-session-prompt",
+      cls: "neuralnotes-msg neuralnotes-msg-session-prompt",
     });
     el.createDiv({
-      cls: "claudsidian-msg-role",
-      text: "Set up Claudsidian",
+      cls: "neuralnotes-msg-role",
+      text: "Set up NeuralNotes",
     });
     el.createDiv({
-      cls: "claudsidian-msg-body",
+      cls: "neuralnotes-msg-body",
       text:
         "No CLAUDE.md found in your vault. CLAUDE.md tells Claude about " +
         "your vault structure, writing style, and how to start each session. " +
         "Want help creating one together?",
     });
-    const buttons = el.createDiv({ cls: "claudsidian-perm-buttons" });
+    const buttons = el.createDiv({ cls: "neuralnotes-perm-buttons" });
 
     const setupBtn = buttons.createEl("button", {
       text: "Set it up",
@@ -215,19 +215,19 @@ export class ClaudeView extends ItemView {
 
   private appendSessionPromptBubble() {
     const el = this.messagesEl.createDiv({
-      cls: "claudsidian-msg claudsidian-msg-session-prompt",
+      cls: "neuralnotes-msg neuralnotes-msg-session-prompt",
     });
     el.createDiv({
-      cls: "claudsidian-msg-role",
+      cls: "neuralnotes-msg-role",
       text: "Session start",
     });
     el.createDiv({
-      cls: "claudsidian-msg-body",
+      cls: "neuralnotes-msg-body",
       text:
         "Your CLAUDE.md defines a session-start protocol. " +
         "Would you like Claude to run it now?",
     });
-    const buttons = el.createDiv({ cls: "claudsidian-perm-buttons" });
+    const buttons = el.createDiv({ cls: "neuralnotes-perm-buttons" });
 
     const runBtn = buttons.createEl("button", {
       text: "Run protocol",
@@ -341,29 +341,29 @@ export class ClaudeView extends ItemView {
     ) => void,
   ) {
     const el = this.messagesEl.createDiv({
-      cls: "claudsidian-msg claudsidian-msg-permission",
+      cls: "neuralnotes-msg neuralnotes-msg-permission",
     });
 
     el.createDiv({
-      cls: "claudsidian-msg-role",
+      cls: "neuralnotes-msg-role",
       text: "Permission required",
     });
 
-    const summary = el.createDiv({ cls: "claudsidian-perm-summary" });
+    const summary = el.createDiv({ cls: "neuralnotes-perm-summary" });
     summary.createSpan({
-      cls: "claudsidian-perm-tool",
+      cls: "neuralnotes-perm-tool",
       text: req.tool,
     });
     const target = this.permissionTarget(req.input);
     if (target) {
-      summary.createSpan({ cls: "claudsidian-perm-target", text: target });
+      summary.createSpan({ cls: "neuralnotes-perm-target", text: target });
     }
 
-    const details = el.createEl("details", { cls: "claudsidian-perm-details" });
+    const details = el.createEl("details", { cls: "neuralnotes-perm-details" });
     details.createEl("summary", { text: "Show input" });
     details.createEl("pre", { text: JSON.stringify(req.input, null, 2) });
 
-    const buttons = el.createDiv({ cls: "claudsidian-perm-buttons" });
+    const buttons = el.createDiv({ cls: "neuralnotes-perm-buttons" });
 
     const finalize = (
       decision: "allow" | "deny",
@@ -546,7 +546,7 @@ export class ClaudeView extends ItemView {
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       this.appendErrorMessage(`Error: ${msg}`);
-      console.error("Claudsidian error:", err);
+      console.error("NeuralNotes error:", err);
     } finally {
       this.currentAbort = null;
       this.setBusy(false);
@@ -589,44 +589,44 @@ export class ClaudeView extends ItemView {
 
   private appendUserMessage(text: string) {
     const el = this.messagesEl.createDiv({
-      cls: "claudsidian-msg claudsidian-msg-user",
+      cls: "neuralnotes-msg neuralnotes-msg-user",
     });
-    el.createDiv({ cls: "claudsidian-msg-role", text: "You" });
-    el.createDiv({ cls: "claudsidian-msg-body", text });
+    el.createDiv({ cls: "neuralnotes-msg-role", text: "You" });
+    el.createDiv({ cls: "neuralnotes-msg-body", text });
     this.addCopyButton(el, () => text);
     this.scrollToBottom();
   }
 
   private appendAssistantBubble(getText: () => string): AssistantBubbleHandle {
     const el = this.messagesEl.createDiv({
-      cls: "claudsidian-msg claudsidian-msg-assistant",
+      cls: "neuralnotes-msg neuralnotes-msg-assistant",
     });
-    el.createDiv({ cls: "claudsidian-msg-role", text: "Claude" });
+    el.createDiv({ cls: "neuralnotes-msg-role", text: "Claude" });
 
     const thinking = el.createEl("details", {
-      cls: "claudsidian-thinking",
+      cls: "neuralnotes-thinking",
     });
     thinking.style.display = "none";
     const thinkingSummary = thinking.createEl("summary");
     const thinkingLabel = thinkingSummary.createSpan({
-      cls: "claudsidian-thinking-label",
+      cls: "neuralnotes-thinking-label",
       text: "Claude's thoughts",
     });
     const thinkingCount = thinkingSummary.createSpan({
-      cls: "claudsidian-thinking-count",
+      cls: "neuralnotes-thinking-count",
     });
     const thinkingList = thinking.createDiv({
-      cls: "claudsidian-thinking-list",
+      cls: "neuralnotes-thinking-list",
     });
 
     const body = el.createDiv({
-      cls: "claudsidian-msg-body claudsidian-placeholder",
+      cls: "neuralnotes-msg-body neuralnotes-placeholder",
     });
     const placeholderWord = randomThinkingWord();
     body.setText(placeholderWord + "…");
 
     const suggestionsEl = el.createDiv({
-      cls: "claudsidian-suggestions",
+      cls: "neuralnotes-suggestions",
     });
     suggestionsEl.style.display = "none";
 
@@ -638,7 +638,7 @@ export class ClaudeView extends ItemView {
     const rowsById = new Map<string, HTMLDivElement>();
     const observer = new MutationObserver(() => {
       if (body.childNodes.length > 0 && body.textContent?.trim() !== placeholderWord + "…") {
-        body.removeClass("claudsidian-placeholder");
+        body.removeClass("neuralnotes-placeholder");
         bodyHasContent = true;
       }
     });
@@ -652,35 +652,35 @@ export class ClaudeView extends ItemView {
         thinkingCount.setText(` (${count})`);
         const debug = this.plugin.settings.debugMode;
         const row = thinkingList.createDiv({
-          cls: "claudsidian-thinking-row",
+          cls: "neuralnotes-thinking-row",
         });
 
         let head: HTMLElement;
         if (debug) {
           const headDetails = row.createEl("details", {
-            cls: "claudsidian-thinking-head-details",
+            cls: "neuralnotes-thinking-head-details",
           });
           head = headDetails.createEl("summary", {
-            cls: "claudsidian-thinking-head",
+            cls: "neuralnotes-thinking-head",
           });
           const inputPre = headDetails.createEl("pre", {
-            cls: "claudsidian-thinking-input",
+            cls: "neuralnotes-thinking-input",
           });
           inputPre.setText(JSON.stringify(input, null, 2));
         } else {
-          head = row.createDiv({ cls: "claudsidian-thinking-head" });
+          head = row.createDiv({ cls: "neuralnotes-thinking-head" });
         }
 
-        head.createSpan({ cls: "claudsidian-thinking-icon", text: "🔧" });
+        head.createSpan({ cls: "neuralnotes-thinking-icon", text: "🔧" });
         head.createSpan({
-          cls: "claudsidian-thinking-name",
+          cls: "neuralnotes-thinking-name",
           text: name,
         });
         const target = this.permissionTarget(input);
         if (target) {
-          head.createSpan({ cls: "claudsidian-thinking-sep", text: "—" });
+          head.createSpan({ cls: "neuralnotes-thinking-sep", text: "—" });
           head.createSpan({
-            cls: "claudsidian-thinking-target",
+            cls: "neuralnotes-thinking-target",
             text: target,
           });
         }
@@ -692,20 +692,20 @@ export class ClaudeView extends ItemView {
         count += 1;
         thinkingCount.setText(` (${count})`);
         const row = thinkingList.createDiv({
-          cls: `claudsidian-thinking-row claudsidian-thinking-row-permission claudsidian-thinking-row-${decision}`,
+          cls: `neuralnotes-thinking-row neuralnotes-thinking-row-permission neuralnotes-thinking-row-${decision}`,
         });
-        const head = row.createDiv({ cls: "claudsidian-thinking-head" });
+        const head = row.createDiv({ cls: "neuralnotes-thinking-head" });
         head.createSpan({
-          cls: "claudsidian-thinking-icon",
+          cls: "neuralnotes-thinking-icon",
           text: decision === "allow" ? "🔓" : "🚫",
         });
         head.createSpan({
-          cls: "claudsidian-thinking-name",
+          cls: "neuralnotes-thinking-name",
           text: `Permission ${decision === "allow" ? "granted" : "denied"}`,
         });
-        head.createSpan({ cls: "claudsidian-thinking-sep", text: "—" });
+        head.createSpan({ cls: "neuralnotes-thinking-sep", text: "—" });
         head.createSpan({
-          cls: "claudsidian-thinking-target",
+          cls: "neuralnotes-thinking-target",
           text: target ? `${toolName} (${target})` : toolName,
         });
         if (scope !== "once") {
@@ -714,7 +714,7 @@ export class ClaudeView extends ItemView {
               ? `always for ${toolName}`
               : `always for this target`;
           head.createSpan({
-            cls: "claudsidian-thinking-scope",
+            cls: "neuralnotes-thinking-scope",
             text: scopeLabel,
           });
         }
@@ -726,15 +726,15 @@ export class ClaudeView extends ItemView {
         if (!row) return false;
         row.addClass(
           isError
-            ? "claudsidian-thinking-row-error"
-            : "claudsidian-thinking-row-ok",
+            ? "neuralnotes-thinking-row-error"
+            : "neuralnotes-thinking-row-ok",
         );
         if (isError && text && this.plugin.settings.debugMode) {
           const errDetails = row.createEl("details", {
-            cls: "claudsidian-thinking-result",
+            cls: "neuralnotes-thinking-result",
           });
           const errSummary = errDetails.createEl("summary", {
-            cls: "claudsidian-thinking-result-summary",
+            cls: "neuralnotes-thinking-result-summary",
           });
           const firstLine = (text.split("\n")[0] ?? text).trim();
           const summaryText =
@@ -744,7 +744,7 @@ export class ClaudeView extends ItemView {
           errSummary.setText(summaryText);
           this.addCopyButton(errDetails, () => text);
           const errBody = errDetails.createEl("pre", {
-            cls: "claudsidian-thinking-result-body",
+            cls: "neuralnotes-thinking-result-body",
           });
           errBody.setText(text.slice(0, 4000));
         }
@@ -754,9 +754,9 @@ export class ClaudeView extends ItemView {
       finalize: () => {
         observer.disconnect();
         thinkingLabel.setText("Claude's thoughts");
-        if (!bodyHasContent && body.hasClass("claudsidian-placeholder")) {
+        if (!bodyHasContent && body.hasClass("neuralnotes-placeholder")) {
           body.empty();
-          body.removeClass("claudsidian-placeholder");
+          body.removeClass("neuralnotes-placeholder");
           body.setText(count > 0 ? "(no message)" : "(no response)");
         }
         const { suggestions } = extractSuggestions(getText());
@@ -772,7 +772,7 @@ export class ClaudeView extends ItemView {
     container.style.display = "";
     for (const text of suggestions) {
       const btn = container.createEl("button", {
-        cls: "claudsidian-suggestion-btn",
+        cls: "neuralnotes-suggestion-btn",
         text,
       });
       btn.addEventListener("click", () => {
@@ -787,7 +787,7 @@ export class ClaudeView extends ItemView {
 
   private addCopyButton(messageEl: HTMLElement, getText: () => string) {
     const btn = messageEl.createEl("button", {
-      cls: "claudsidian-copy-btn",
+      cls: "neuralnotes-copy-btn",
       attr: { "aria-label": "Copy message", title: "Copy" },
     });
     setIcon(btn, "copy");
@@ -798,10 +798,10 @@ export class ClaudeView extends ItemView {
       try {
         await navigator.clipboard.writeText(text);
         setIcon(btn, "check");
-        btn.addClass("claudsidian-copy-btn-copied");
+        btn.addClass("neuralnotes-copy-btn-copied");
         window.setTimeout(() => {
           setIcon(btn, "copy");
-          btn.removeClass("claudsidian-copy-btn-copied");
+          btn.removeClass("neuralnotes-copy-btn-copied");
         }, 1200);
       } catch (err) {
         new Notice("Failed to copy to clipboard");
@@ -826,7 +826,7 @@ export class ClaudeView extends ItemView {
 
   private appendSystemMessage(text: string) {
     const el = this.messagesEl.createDiv({
-      cls: "claudsidian-msg claudsidian-msg-system",
+      cls: "neuralnotes-msg neuralnotes-msg-system",
     });
     el.setText(text);
     this.scrollToBottom();
@@ -834,19 +834,19 @@ export class ClaudeView extends ItemView {
 
   private appendToolError(text: string) {
     const el = this.messagesEl.createDiv({
-      cls: "claudsidian-msg claudsidian-msg-tool-error",
+      cls: "neuralnotes-msg neuralnotes-msg-tool-error",
     });
     const display = `Tool error: ${text.slice(0, 500)}`;
-    el.createDiv({ cls: "claudsidian-msg-body", text: display });
+    el.createDiv({ cls: "neuralnotes-msg-body", text: display });
     this.addCopyButton(el, () => `Tool error: ${text}`);
     this.scrollToBottom();
   }
 
   private appendErrorMessage(text: string) {
     const el = this.messagesEl.createDiv({
-      cls: "claudsidian-msg claudsidian-msg-error",
+      cls: "neuralnotes-msg neuralnotes-msg-error",
     });
-    el.createDiv({ cls: "claudsidian-msg-body", text });
+    el.createDiv({ cls: "neuralnotes-msg-body", text });
     this.addCopyButton(el, () => text);
     this.scrollToBottom();
   }

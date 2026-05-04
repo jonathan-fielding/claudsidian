@@ -1,5 +1,5 @@
 import { App, PluginSettingTab, Setting } from "obsidian";
-import type ClaudsidianPlugin from "./main";
+import type NeuralNotesPlugin from "./main";
 
 export type PermissionMode =
   | "default"
@@ -7,7 +7,7 @@ export type PermissionMode =
   | "bypassPermissions"
   | "plan";
 
-export interface ClaudsidianSettings {
+export interface NeuralNotesSettings {
   pathToClaudeBinary: string;
   permissionMode: PermissionMode;
   systemPromptAddendum: string;
@@ -16,7 +16,7 @@ export interface ClaudsidianSettings {
   sendOnEnter: boolean;
 }
 
-export const DEFAULT_SETTINGS: ClaudsidianSettings = {
+export const DEFAULT_SETTINGS: NeuralNotesSettings = {
   pathToClaudeBinary: "",
   permissionMode: "acceptEdits",
   systemPromptAddendum: [
@@ -33,10 +33,10 @@ export const DEFAULT_SETTINGS: ClaudsidianSettings = {
   sendOnEnter: false,
 };
 
-export class ClaudsidianSettingTab extends PluginSettingTab {
-  plugin: ClaudsidianPlugin;
+export class NeuralNotesSettingTab extends PluginSettingTab {
+  plugin: NeuralNotesPlugin;
 
-  constructor(app: App, plugin: ClaudsidianPlugin) {
+  constructor(app: App, plugin: NeuralNotesPlugin) {
     super(app, plugin);
     this.plugin = plugin;
   }
@@ -142,7 +142,7 @@ export class ClaudsidianSettingTab extends PluginSettingTab {
           },
         );
         ta.inputEl.rows = 4;
-        ta.inputEl.addClass("claudsidian-settings-textarea");
+        ta.inputEl.addClass("neuralnotes-settings-textarea");
       });
   }
 }
