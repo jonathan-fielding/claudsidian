@@ -1,5 +1,11 @@
 # neuralnotes
 
+## 1.0.2
+
+### Patch Changes
+
+- 8e4db9a: Resolve Obsidian plugin review feedback: replace `any` types with SDK types, drop the plugin name from command id/name, fix sentence case in UI text, await `revealLeaf` promises, swap inline `style.display` for a CSS class, and tighten async generator/regex/event-handler typing.
+
 ## 1.0.1
 
 ### Patch Changes

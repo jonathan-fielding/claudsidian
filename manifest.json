@@ -1,7 +1,7 @@
 {
   "id": "neuralnotes",
   "name": "NeuralNotes",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "minAppVersion": "1.5.7",
   "description": "Interact with Claude Code, with a chat that that can read and edit your vault notes.",
   "author": "Jonathan Fielding",
