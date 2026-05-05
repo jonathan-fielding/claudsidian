@@ -17,13 +17,13 @@ export default class NeuralNotesPlugin extends Plugin {
       (leaf: WorkspaceLeaf) => new ClaudeView(leaf, this),
     );
 
-    this.addRibbonIcon("bot", "NeuralNotes", () => {
+    this.addRibbonIcon("bot", "Open neural notes", () => {
       void this.activateView();
     });
 
     this.addCommand({
-      id: "open-neuralnotes-pane",
-      name: "Open NeuralNotes pane",
+      id: "open-pane",
+      name: "Open pane",
       callback: () => void this.activateView(),
     });
 
@@ -35,13 +35,13 @@ export default class NeuralNotesPlugin extends Plugin {
 
     const existing = workspace.getLeavesOfType(VIEW_TYPE_NEURALNOTES);
     if (existing.length > 0) {
-      workspace.revealLeaf(existing[0]);
+      await workspace.revealLeaf(existing[0]);
       return;
     }
 
     const leaf = workspace.getLeaf("tab");
     await leaf.setViewState({ type: VIEW_TYPE_NEURALNOTES, active: true });
-    workspace.revealLeaf(leaf);
+    await workspace.revealLeaf(leaf);
   }
 
   async loadSettings() {

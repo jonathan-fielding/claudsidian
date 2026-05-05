@@ -6,6 +6,7 @@ import * as fs from "fs";
 import * as os from "os";
 import * as path from "path";
 import { query as sdkQuery } from "@anthropic-ai/claude-agent-sdk";
+import type { SDKUserMessage } from "@anthropic-ai/claude-agent-sdk";
 
 const execFileP = promisify(execFile);
 
@@ -134,7 +135,7 @@ export async function runClaudeQuery(
   }
 
   // The SDK requires streaming-input format when canUseTool is set.
-  const promptArg: any = usingCanUseTool
+  const promptArg: string | AsyncIterable<SDKUserMessage> = usingCanUseTool
     ? singleMessageStream(options.prompt, options.resumeSessionId)
     : options.prompt;
 
@@ -145,10 +146,12 @@ export async function runClaudeQuery(
 
   let lastSessionId: string | undefined;
 
-  for await (const message of iterator as AsyncIterable<any>) {
+  for await (const message of iterator) {
     if (options.signal?.aborted) break;
 
-    if (message.session_id) lastSessionId = message.session_id;
+    if ("session_id" in message && message.session_id) {
+      lastSessionId = message.session_id;
+    }
 
     if (message.type === "system" && message.subtype === "init") {
       options.onEvent({ kind: "system", sessionId: message.session_id });
@@ -156,32 +159,38 @@ export async function runClaudeQuery(
     }
 
     if (message.type === "assistant" && message.message?.content) {
-      for (const block of message.message.content) {
-        if (block.type === "text" && block.text) {
-          options.onEvent({ kind: "assistant-text", text: block.text });
-        } else if (block.type === "tool_use") {
-          options.onEvent({
-            kind: "tool-use",
-            tool: block.name,
-            toolInput: block.input,
-            toolUseId: block.id,
-          });
+      const content = message.message.content;
+      if (Array.isArray(content)) {
+        for (const block of content) {
+          if (block.type === "text" && block.text) {
+            options.onEvent({ kind: "assistant-text", text: block.text });
+          } else if (block.type === "tool_use") {
+            options.onEvent({
+              kind: "tool-use",
+              tool: block.name,
+              toolInput: block.input,
+              toolUseId: block.id,
+            });
+          }
         }
       }
     }
 
     if (message.type === "user" && message.message?.content) {
-      for (const block of message.message.content) {
-        if (block.type === "tool_result") {
-          options.onEvent({
-            kind: "tool-result",
-            isError: !!block.is_error,
-            toolUseId: block.tool_use_id,
-            text:
-              typeof block.content === "string"
-                ? block.content
-                : JSON.stringify(block.content),
-          });
+      const content = message.message.content;
+      if (Array.isArray(content)) {
+        for (const block of content) {
+          if (typeof block === "object" && block.type === "tool_result") {
+            options.onEvent({
+              kind: "tool-result",
+              isError: !!block.is_error,
+              toolUseId: block.tool_use_id,
+              text:
+                typeof block.content === "string"
+                  ? block.content
+                  : JSON.stringify(block.content),
+            });
+          }
         }
       }
     }
@@ -189,7 +198,7 @@ export async function runClaudeQuery(
     if (message.type === "result") {
       options.onEvent({
         kind: "result",
-        text: message.result,
+        text: "result" in message ? message.result : undefined,
         isError: message.is_error,
         sessionId: message.session_id,
       });
@@ -222,15 +231,29 @@ function buildChildEnv(claudeBinaryPath: string): Record<string, string> {
   return inherited;
 }
 
-async function* singleMessageStream(
+function singleMessageStream(
   prompt: string,
   resumeSessionId: string | undefined,
-): AsyncGenerator<any> {
-  yield {
+): AsyncIterable<SDKUserMessage> {
+  const message: SDKUserMessage = {
     type: "user",
     message: { role: "user", content: prompt },
     parent_tool_use_id: null,
     session_id: resumeSessionId ?? "",
+  };
+  let delivered = false;
+  return {
+    [Symbol.asyncIterator]() {
+      return {
+        next() {
+          if (delivered) {
+            return Promise.resolve({ value: undefined, done: true as const });
+          }
+          delivered = true;
+          return Promise.resolve({ value: message, done: false as const });
+        },
+      };
+    },
   };
 }
 
