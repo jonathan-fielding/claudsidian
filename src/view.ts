@@ -44,7 +44,7 @@ export class ClaudeView extends ItemView {
   }
 
   getDisplayText(): string {
-    return "NeuralNotes";
+    return "Neural notes";
   }
 
   getIcon(): string {
@@ -64,7 +64,7 @@ export class ClaudeView extends ItemView {
     const inputRow = root.createDiv({ cls: "neuralnotes-input-row" });
     this.inputEl = inputRow.createEl("textarea", {
       cls: "neuralnotes-input",
-      attr: { placeholder: "Ask Claude about your notes…", rows: "3" },
+      attr: { placeholder: "Ask about your notes…", rows: "3" },
     });
     this.inputEl.addEventListener("keydown", (e) => {
       if (e.key !== "Enter") return;
@@ -110,15 +110,16 @@ export class ClaudeView extends ItemView {
     newBtn.addEventListener("click", () => this.resetConversation());
 
     this.appendSystemMessage(
-      "NeuralNotes ready. Type a question and press Send (⌘/Ctrl+Enter).",
+      "NeuralNotes ready. Type a question and press send (⌘/Ctrl+Enter).",
     );
 
-    void this.maybeOfferSessionProtocol();
+    await this.maybeOfferSessionProtocol();
   }
 
-  async onClose() {
+  onClose(): Promise<void> {
     this.currentAbort?.abort();
     this.renderComponent.unload();
+    return Promise.resolve();
   }
 
   private resetConversation() {
@@ -260,8 +261,12 @@ export class ClaudeView extends ItemView {
     if (req.input && typeof req.input === "object") {
       const obj = req.input as Record<string, unknown>;
       const target =
-        obj.file_path ?? obj.path ?? obj.pattern ?? obj.command ?? "";
-      return `${req.tool}::${String(target)}`;
+        obj.file_path ?? obj.path ?? obj.pattern ?? obj.command;
+      const targetStr =
+        typeof target === "string" || typeof target === "number"
+          ? String(target)
+          : "";
+      return `${req.tool}::${targetStr}`;
     }
     return req.tool;
   }
@@ -491,7 +496,7 @@ export class ClaudeView extends ItemView {
     const actualPrompt = opts?.actualPrompt ?? inputValue;
     if (!actualPrompt) return;
     if (this.currentAbort) {
-      new Notice("Claude is already responding. Press Stop first.");
+      new Notice("Claude is already responding. Press the stop button first.");
       return;
     }
 
@@ -604,9 +609,8 @@ export class ClaudeView extends ItemView {
     el.createDiv({ cls: "neuralnotes-msg-role", text: "Claude" });
 
     const thinking = el.createEl("details", {
-      cls: "neuralnotes-thinking",
+      cls: "neuralnotes-thinking neuralnotes-hidden",
     });
-    thinking.style.display = "none";
     const thinkingSummary = thinking.createEl("summary");
     const thinkingLabel = thinkingSummary.createSpan({
       cls: "neuralnotes-thinking-label",
@@ -626,9 +630,8 @@ export class ClaudeView extends ItemView {
     body.setText(placeholderWord + "…");
 
     const suggestionsEl = el.createDiv({
-      cls: "neuralnotes-suggestions",
+      cls: "neuralnotes-suggestions neuralnotes-hidden",
     });
-    suggestionsEl.style.display = "none";
 
     this.addCopyButton(el, getText);
     this.scrollToBottom();
@@ -647,7 +650,7 @@ export class ClaudeView extends ItemView {
     return {
       body,
       addThinkingItem: (name, input, id) => {
-        thinking.style.display = "";
+        thinking.removeClass("neuralnotes-hidden");
         count += 1;
         thinkingCount.setText(` (${count})`);
         const debug = this.plugin.settings.debugMode;
@@ -688,7 +691,7 @@ export class ClaudeView extends ItemView {
         this.scrollToBottom();
       },
       addPermissionLog: (toolName, target, decision, scope) => {
-        thinking.style.display = "";
+        thinking.removeClass("neuralnotes-hidden");
         count += 1;
         thinkingCount.setText(` (${count})`);
         const row = thinkingList.createDiv({
@@ -769,7 +772,7 @@ export class ClaudeView extends ItemView {
 
   private populateSuggestions(container: HTMLElement, suggestions: string[]) {
     container.empty();
-    container.style.display = "";
+    container.removeClass("neuralnotes-hidden");
     for (const text of suggestions) {
       const btn = container.createEl("button", {
         cls: "neuralnotes-suggestion-btn",
@@ -778,7 +781,7 @@ export class ClaudeView extends ItemView {
       btn.addEventListener("click", () => {
         if (this.currentAbort) return;
         container.querySelectorAll("button").forEach((b) => {
-          (b as HTMLButtonElement).disabled = true;
+          b.disabled = true;
         });
         void this.handleSend({ displayPrompt: text, actualPrompt: text });
       });
@@ -791,22 +794,24 @@ export class ClaudeView extends ItemView {
       attr: { "aria-label": "Copy message", title: "Copy" },
     });
     setIcon(btn, "copy");
-    btn.addEventListener("click", async (e) => {
+    btn.addEventListener("click", (e) => {
       e.stopPropagation();
       const text = getText();
       if (!text) return;
-      try {
-        await navigator.clipboard.writeText(text);
-        setIcon(btn, "check");
-        btn.addClass("neuralnotes-copy-btn-copied");
-        window.setTimeout(() => {
-          setIcon(btn, "copy");
-          btn.removeClass("neuralnotes-copy-btn-copied");
-        }, 1200);
-      } catch (err) {
-        new Notice("Failed to copy to clipboard");
-        console.error(err);
-      }
+      void (async () => {
+        try {
+          await navigator.clipboard.writeText(text);
+          setIcon(btn, "check");
+          btn.addClass("neuralnotes-copy-btn-copied");
+          window.setTimeout(() => {
+            setIcon(btn, "copy");
+            btn.removeClass("neuralnotes-copy-btn-copied");
+          }, 1200);
+        } catch (err) {
+          new Notice("Failed to copy to clipboard");
+          console.error(err);
+        }
+      })();
     });
   }
 
@@ -957,7 +962,7 @@ export function normalizeStreamingMarkdown(input: string): string {
       // Match a non-newline character followed directly by a bullet marker.
       s = s.replace(/(?<=[^\s])([*-]\s)/g, "\n$1");
       // Indented bullets glued to preceding text (two-space prefix).
-      s = s.replace(/(?<=[^\n])(  - )/g, "\n$1");
+      s = s.replace(/(?<=[^\n])( {2}- )/g, "\n$1");
       // Numbered list items glued to preceding text ("...done.1. Next").
       s = s.replace(/(?<=[^\n])(\d+\.\s)/g, "\n$1");
       return s;

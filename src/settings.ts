@@ -52,7 +52,7 @@ export class NeuralNotesSettingTab extends PluginSettingTab {
     );
 
     new Setting(containerEl)
-      .setName("Path to Claude binary")
+      .setName("Claude binary path")
       .setDesc(
         "Optional. Leave blank to use the `claude` binary on your PATH.",
       )
@@ -74,10 +74,10 @@ export class NeuralNotesSettingTab extends PluginSettingTab {
       )
       .addDropdown((dd) =>
         dd
-          .addOption("default", "default (prompt for edits)")
-          .addOption("acceptEdits", "acceptEdits (allow edits silently)")
-          .addOption("plan", "plan (read-only)")
-          .addOption("bypassPermissions", "bypassPermissions (allow all)")
+          .addOption("default", "Default (prompt for edits)")
+          .addOption("acceptEdits", "Accept edits (allow silently)")
+          .addOption("plan", "Plan (read-only)")
+          .addOption("bypassPermissions", "Bypass permissions (allow all)")
           .setValue(this.plugin.settings.permissionMode)
           .onChange(async (value) => {
             this.plugin.settings.permissionMode = value as PermissionMode;
@@ -86,10 +86,10 @@ export class NeuralNotesSettingTab extends PluginSettingTab {
       );
 
     new Setting(containerEl)
-      .setName("Send on Enter")
+      .setName("Send on enter")
       .setDesc(
-        "When on: Enter sends the message and ⌘/Ctrl+Enter inserts a newline. " +
-          "When off (default): Enter inserts a newline and ⌘/Ctrl+Enter sends.",
+        "When on: enter sends the message and ⌘/Ctrl+Enter inserts a newline. " +
+          "When off (default): enter inserts a newline and ⌘/Ctrl+Enter sends.",
       )
       .addToggle((toggle) =>
         toggle
@@ -133,7 +133,7 @@ export class NeuralNotesSettingTab extends PluginSettingTab {
 
     new Setting(containerEl)
       .setName("System prompt addendum")
-      .setDesc("Appended to Claude's system prompt for every conversation.")
+      .setDesc("Appended to the system prompt for every conversation.")
       .addTextArea((ta) => {
         ta.setValue(this.plugin.settings.systemPromptAddendum).onChange(
           async (value) => {
